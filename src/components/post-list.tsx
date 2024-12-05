@@ -1,48 +1,56 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { format } from 'date-fns'
-import { motion } from 'framer-motion'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Calendar, ChevronRight } from 'lucide-react'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { format } from "date-fns";
+import { motion } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Calendar, ChevronRight } from "lucide-react";
 
 interface Post {
-  id: number
-  title: { rendered: string }
-  excerpt: { rendered: string }
-  date: string
+  id: number;
+  title: { rendered: string };
+  excerpt: { rendered: string };
+  date: string;
   _embedded?: {
     author: Array<{
-      name: string
-      avatar_urls: { [key: string]: string }
-    }>
-  }
+      name: string;
+      avatar_urls: { [key: string]: string };
+    }>;
+  };
 }
 
 export function PostList() {
-  const [posts, setPosts] = useState<Post[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadPosts() {
       try {
-        const response = await fetch('https://hushen.c1.biz/wp-json/wp/v2/posts?_embed')
-        if (!response.ok) throw new Error('Failed to fetch posts')
-        const data = await response.json()
-        setPosts(data)
+        const response = await fetch(
+          "http://hushen.c1.biz/wp-json/wp/v2/posts?_embed"
+        );
+        if (!response.ok) throw new Error("Failed to fetch posts");
+        const data = await response.json();
+        setPosts(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch posts')
+        setError(err instanceof Error ? err.message : "Failed to fetch posts");
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    loadPosts()
-  }, [])
+    loadPosts();
+  }, []);
 
   if (isLoading) {
     return (
@@ -59,7 +67,7 @@ export function PostList() {
           </Card>
         ))}
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -68,7 +76,7 @@ export function PostList() {
         <h2 className="text-xl font-semibold mb-2">Unable to load posts</h2>
         <p className="text-muted-foreground">{error}</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -83,16 +91,18 @@ export function PostList() {
           <Link href={`/post/${post.id}`}>
             <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CardTitle className="line-clamp-2">{post.title.rendered}</CardTitle>
+                <CardTitle className="line-clamp-2">
+                  {post.title.rendered}
+                </CardTitle>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Calendar className="mr-2 h-4 w-4" />
-                  {format(new Date(post.date), 'MMM d, yyyy')}
+                  {format(new Date(post.date), "MMM d, yyyy")}
                 </div>
               </CardHeader>
               <CardContent>
-                <div 
+                <div
                   className="line-clamp-3 text-sm text-muted-foreground"
-                  dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }} 
+                  dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
                 />
               </CardContent>
               <CardFooter>
@@ -106,6 +116,5 @@ export function PostList() {
         </motion.div>
       ))}
     </div>
-  )
+  );
 }
-

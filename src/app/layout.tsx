@@ -7,8 +7,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "WordPress Blog",
-  description: "A Next.js blog powered by WordPress API",
+  title: "Gujrati Naat Sarif",
+  description: "A Layric of Gujrati Naat-e-pak",
 };
 
 export default function RootLayout({
