@@ -24,7 +24,7 @@ interface Post {
 
 export function BlogPosts() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,9 +36,9 @@ export function BlogPosts() {
         if (!response.ok) {
           throw new Error("Failed to fetch posts");
         }
-        const data: Post[] = await response.json();
+        const data = await response.json();
         setPosts(data);
-      } catch {
+      } catch (err) {
         setError(
           "An error occurred while fetching the posts. Please try again later."
         );
@@ -100,7 +100,7 @@ export function BlogPosts() {
           <CardFooter>
             <Badge variant="secondary">
               <a href={post.link} target="_blank" rel="noopener noreferrer">
-                Read More
+                વધુ વાંચો
               </a>
             </Badge>
           </CardFooter>

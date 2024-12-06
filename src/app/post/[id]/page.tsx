@@ -9,30 +9,40 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar } from "lucide-react";
 
-// Define the Post type to represent the structure of the fetched post data
-type Post = {
-  id: number;
-  title: { rendered: string };
-  content: { rendered: string };
-  date: string;
-};
-
-export default function PostPage({ params }: { params: { id: string } }) {
-  const [post, setPost] = useState<Post | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export default function PostPage({
+  params: initialParams,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const [post, setPost] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [id, setId] = useState<string | null>(null);
   const router = useRouter();
 
-  const { id } = params;
+  useEffect(() => {
+    async function resolveParams() {
+      try {
+        const resolvedParams = await initialParams;
+        setId(resolvedParams.id);
+      } catch (err) {
+        setError("Failed to resolve parameters");
+      }
+    }
+
+    resolveParams();
+  }, [initialParams]);
 
   useEffect(() => {
+    if (!id) return;
+
     async function loadPost() {
       try {
         const response = await fetch(
           `https://hushen.c1.biz/wp-json/wp/v2/posts/${id}?_embed`
         );
         if (!response.ok) throw new Error("Failed to fetch post");
-        const data: Post = await response.json();
+        const data = await response.json();
         setPost(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch post");

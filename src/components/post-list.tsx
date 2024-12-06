@@ -37,7 +37,7 @@ export function PostList() {
     async function loadPosts() {
       try {
         const response = await fetch(
-          "http://hushen.c1.biz/wp-json/wp/v2/posts?_embed"
+          "https://hushen.c1.biz/wp-json/wp/v2/posts?_embed"
         );
         if (!response.ok) throw new Error("Failed to fetch posts");
         const data = await response.json();
@@ -107,7 +107,7 @@ export function PostList() {
               </CardContent>
               <CardFooter>
                 <Button variant="ghost" className="ml-auto group">
-                  Read more
+                  વધુ વાંચો
                   <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </CardFooter>
