@@ -18,17 +18,17 @@ type WordPressPost = {
   content: {
     rendered: string;
   };
-  date: string; // Added the `date` field
+  date: string;
 };
 
-// Define the props for the PostPage component
 interface PostPageProps {
   params: {
-    id: string | number | null ;
+    id: string;
   };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function PostPage({ params }: PostPageProps) {
+export default function PostPage({ params, searchParams }: PostPageProps) {
   const [post, setPost] = useState<WordPressPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
