@@ -1,3 +1,4 @@
+// Import statements
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,7 +8,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar } from 'lucide-react';
+import { ArrowLeft, Calendar } from "lucide-react";
 
 // Define the type for a WordPress post
 type WordPressPost = {
@@ -21,12 +22,14 @@ type WordPressPost = {
   date: string;
 };
 
+// Change the PostPageProps interface to match the expected dynamic params
 interface PostPageProps {
   params: {
     id: string;
   };
 }
 
+// Corrected PostPage component
 export default function PostPage({ params }: PostPageProps) {
   const [post, setPost] = useState<WordPressPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
