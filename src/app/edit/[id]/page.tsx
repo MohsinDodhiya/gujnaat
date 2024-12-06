@@ -1,30 +1,35 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { use } from 'react'
-import { PostForm } from '@/components/post-form'
-import { fetchPost } from '../../../../utils/api'
+import { useState, useEffect } from "react";
+import { PostForm } from "@/components/post-form";
+import { fetchPost } from "../../../../utils/api";
 
 // Define the type for a WordPress post
 type WordPressPost = {
-  id: number
+  id: number;
   title: {
-    rendered: string
-  }
+    rendered: string;
+  };
   content: {
-    rendered: string
-  }
-}
+    rendered: string;
+  };
+};
 
-export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = use(params)
-  const [post, setPost] = useState<WordPressPost | null>(null)
+export default function EditPostPage({ params }: { params: { id: string } }) {
+  const [post, setPost] = useState<WordPressPost | null>(null);
 
+  // Effect to load the post
   useEffect(() => {
-    fetchPost(parseInt(resolvedParams.id)).then(setPost)
-  }, [resolvedParams.id])
+    const fetchData = async () => {
+      const postId = parseInt(params.id);
+      const fetchedPost = await fetchPost(postId);
+      setPost(fetchedPost);
+    };
 
-  if (!post) return <div>Loading...</div>
+    fetchData();
+  }, [params.id]); // Re-fetch if the ID changes
+
+  if (!post) return <div>Loading...</div>;
 
   return (
     <main className="container mx-auto py-8">
@@ -35,5 +40,5 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         initialContent={post.content.rendered}
       />
     </main>
-  )
+  );
 }

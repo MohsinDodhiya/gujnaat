@@ -35,10 +35,20 @@ export default function PostPage({
   useEffect(() => {
     async function loadPost() {
       try {
+        // Resolve the params promise to get the post ID
+        const resolvedParams = await params;
+        const postId = resolvedParams.id;
+
+        if (!postId) {
+          throw new Error("Post ID is missing");
+        }
+
         const response = await fetch(
-          `https://hushen.c1.biz/wp-json/wp/v2/posts/${params.id}?_embed`
+          `https://hushen.c1.biz/wp-json/wp/v2/posts/${postId}?_embed`
         );
+
         if (!response.ok) throw new Error("Failed to fetch post");
+
         const data = await response.json();
         setPost(data);
       } catch (err) {
