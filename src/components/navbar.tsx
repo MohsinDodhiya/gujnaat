@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu"
-import { Moon, Sun, BookOpen, Star, Globe, ChevronDown, Library, BookMarked, History, PenTool, Search } from 'lucide-react'
+import { Moon, Sun, BookOpen, Star, ChevronDown, Library, BookMarked, PenTool, Search } from 'lucide-react'
 import { MobileMenu } from './ui/mobile-menu'
 export function Navbar() {
   const { theme, setTheme } = useTheme()

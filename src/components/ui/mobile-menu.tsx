@@ -5,7 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, X } from 'lucide-react'
+import { Menu } from 'lucide-react'
 
 export function MobileMenu() {
   const [open, setOpen] = React.useState(false)

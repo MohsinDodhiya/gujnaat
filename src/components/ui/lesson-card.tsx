@@ -1,12 +1,17 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search } from 'lucide-react'
+import { motion } from "framer-motion";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
-export function LessonCard() {
+interface LessonCardProps {
+  lessonTitle: string;
+  nextLessons: { title: string; progress: number }[];
+}
+
+export function LessonCard({ lessonTitle, nextLessons }: LessonCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -21,38 +26,45 @@ export function LessonCard() {
             <Input
               placeholder="SEARCH"
               className="bg-white/10 border-white/20 text-white placeholder:text-white/50 pl-10"
+              aria-label="Search lessons"
             />
           </div>
-          <h2 className="text-3xl font-bold mb-2">
-            hello!
-            <br />
-            lorem ipsum
-          </h2>
+          <h2 className="text-3xl font-bold mb-2">{lessonTitle}</h2>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="bg-pink-500 rounded-lg p-6">
-            <h3 className="text-2xl font-bold mb-4">Today's lesson</h3>
+          <section className="bg-pink-500 rounded-lg p-6">
+            <h3 className="text-2xl font-bold mb-4">Today&apos;s Lesson</h3>
             <Button className="bg-white text-pink-500 hover:bg-white/90">
               GET STARTED
             </Button>
-          </div>
-          
-          <div className="space-y-4">
+          </section>
+
+          <section className="space-y-4">
             <h4 className="font-medium">NEXT LESSON</h4>
             <div className="space-y-3">
-              <div className="flex items-center justify-between bg-white/10 p-4 rounded-lg">
-                <span>LOREM IPSUM CONTINUE</span>
-                <span className="bg-cyan-400 px-2 py-1 rounded text-sm font-bold">50%</span>
-              </div>
-              <div className="flex items-center justify-between bg-white/10 p-4 rounded-lg">
-                <span>LOREM IPSUM CONTINUE</span>
-                <span className="bg-purple-400 px-2 py-1 rounded text-sm font-bold">20%</span>
-              </div>
+              {nextLessons.map((lesson, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between bg-white/10 p-4 rounded-lg"
+                >
+                  <span>{lesson.title}</span>
+                  <span
+                    className={`${
+                      lesson.progress >= 50
+                        ? "bg-cyan-400"
+                        : lesson.progress >= 20
+                        ? "bg-purple-400"
+                        : "bg-gray-400"
+                    } px-2 py-1 rounded text-sm font-bold`}
+                  >
+                    {lesson.progress}%
+                  </span>
+                </div>
+              ))}
             </div>
-          </div>
+          </section>
         </CardContent>
       </Card>
     </motion.div>
-  )
+  );
 }
-

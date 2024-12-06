@@ -42,6 +42,7 @@ export function BlogPosts() {
         setError(
           "An error occurred while fetching the posts. Please try again later."
         );
+        throw err
       } finally {
         setIsLoading(false);
       }
