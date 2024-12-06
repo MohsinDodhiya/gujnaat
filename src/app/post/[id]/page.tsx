@@ -24,7 +24,7 @@ type WordPressPost = {
 // Define the props for the PostPage component
 interface PostPageProps {
   params: {
-    id: string;
+    id: string | number | null ;
   };
 }
 
