@@ -22,15 +22,11 @@ type WordPressPost = {
   date: string;
 };
 
-// Change the PostPageProps interface to match the expected dynamic params
-interface PostPageProps {
-  params: {
-    id: string;
-  };
-}
-
-// Corrected PostPage component
-export default function PostPage({ params }: PostPageProps) {
+export default function PostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const [post, setPost] = useState<WordPressPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,7 +49,7 @@ export default function PostPage({ params }: PostPageProps) {
     }
 
     loadPost();
-  }, [params.id]);
+  }, [params]);
 
   if (isLoading) {
     return (
