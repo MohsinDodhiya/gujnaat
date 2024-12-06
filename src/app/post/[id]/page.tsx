@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
@@ -21,11 +19,12 @@ type WordPressPost = {
   date: string; // Added the `date` field
 };
 
-export default function PostPage({
-  params,
-}: {
-  params: { id: string }; // Corrected type
-}) {
+// Update the type for PageProps with params
+type PageProps = {
+  params: { id: string };
+};
+
+export default function PostPage({ params }: PageProps) {
   const [post, setPost] = useState<WordPressPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
