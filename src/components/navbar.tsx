@@ -1,9 +1,10 @@
-'use client'
+"use client";
 
-import * as React from "react"
-import Link from 'next/link'
-import { useTheme } from 'next-themes'
-import { Button } from '@/components/ui/button'
+import * as React from "react";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,21 +12,26 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
   DropdownMenuGroup,
-} from "@/components/ui/dropdown-menu"
-import { Moon, Sun, BookOpen, Star, ChevronDown, Library, BookMarked, PenTool, Search } from 'lucide-react'
-import { MobileMenu } from './ui/mobile-menu'
-export function Navbar() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
+} from "@/components/ui/dropdown-menu";
+import { Moon, Sun, BookOpen, Star, ChevronDown, Library, BookMarked, PenTool, Search } from 'lucide-react';
+import { MobileMenu } from "./mobile-menu";
 
-  // Handle hydration mismatch
+export function Navbar() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+  const router = useRouter();
+
   React.useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
-    return null // Prevent hydration mismatch by not rendering until mounted
+    return null;
   }
+
+  const handleCategorySelect = (value: string) => {
+    router.push(`/category/${value}`);
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -36,7 +42,7 @@ export function Navbar() {
               <BookOpen className="h-6 w-6 text-primary" />
               <span className="font-bold text-xl">નાત શરીફ</span>
             </Link>
-            
+
             <div className="hidden md:flex items-center gap-6">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -48,20 +54,29 @@ export function Navbar() {
                 <DropdownMenuContent align="start" className="w-56">
                   <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
-                      <Link href="/latest-naats" className="flex items-center gap-2">
+                      <Link
+                        href="/latest-naats"
+                        className="flex items-center gap-2"
+                      >
                         <Star className="h-4 w-4" />
                         નવીનતમ નાત
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/popular-naats" className="flex items-center gap-2">
+                      <Link
+                        href="/popular-naats"
+                        className="flex items-center gap-2"
+                      >
                         <Library className="h-4 w-4" />
                         લોકપ્રિય નાત
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link href="/categories" className="flex items-center gap-2">
+                      <Link
+                        href="/categories"
+                        className="flex items-center gap-2"
+                      >
                         <BookMarked className="h-4 w-4" />
                         શ્રેણીઓ
                       </Link>
@@ -76,11 +91,53 @@ export function Navbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <Link href="/search" className="text-muted-foreground hover:text-primary transition-colors">
-                શોધ કરો
-              </Link>
-              
-              <Link href="/favorites" className="text-muted-foreground hover:text-primary transition-colors">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center gap-1">
+                    પસંદ કરો
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("aaka")}>
+                      આકા
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("duaa")}>
+                      દુઆ
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("gaush")}>
+                      ગૌસ-એ-પાક
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("hamd")}>
+                      હમ્દ
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("imam")}>
+                      ઈમામ-એ-હુસૈન
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("khwaja")}>
+                      ખ્વાજા ગરીબ નવાઝ
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("mnqabat")}>
+                      મનકબત
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("moula")}>
+                      મૌલા અલી
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("naat")}>
+                      નાત
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleCategorySelect("salami")}>
+                      સલામી
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <Link
+                href="/favorites"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 પસંદગી
               </Link>
             </div>
@@ -99,12 +156,11 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="mr-2"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="mr-2 hover:rounded-full p-2.5"
             >
               <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">થીમ બદલો</span>
             </Button>
 
             <div className="hidden sm:flex gap-2">
@@ -117,10 +173,10 @@ export function Navbar() {
             </div>
 
             <MobileMenu />
+            
           </div>
         </div>
       </div>
     </nav>
-  )
+  );
 }
-

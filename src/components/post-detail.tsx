@@ -1,3 +1,4 @@
+'use server'
 import { format } from "date-fns";
 import {
   Card,
@@ -47,7 +48,6 @@ export function PostDetail({ post }: PostDetailProps) {
   }
 
   const { title, content, date, author, comments } = post;
-
   return (
     <Card className="w-full max-w-3xl mx-auto">
       <CardHeader>
