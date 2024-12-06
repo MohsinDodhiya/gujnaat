@@ -15,19 +15,44 @@ type WordPressPost = {
   };
 };
 
-export default function EditPostPage({ params }: { params: { id: string } }) {
+export default function EditPostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const [postId, setPostId] = useState<number | null>(null);
   const [post, setPost] = useState<WordPressPost | null>(null);
 
-  // Effect to load the post
+  // Resolve the promise and set the postId
   useEffect(() => {
-    const fetchData = async () => {
-      const postId = parseInt(params.id);
-      const fetchedPost = await fetchPost(postId);
-      setPost(fetchedPost);
+    const resolveParams = async () => {
+      const resolvedParams = await params;
+      const id = parseInt(resolvedParams.id, 10); // Convert id to number
+      if (!isNaN(id)) {
+        setPostId(id);
+      } else {
+        console.error("Invalid post ID");
+      }
     };
 
-    fetchData();
-  }, [params.id]); // Re-fetch if the ID changes
+    resolveParams();
+  }, [params]);
+
+  // Fetch the post once postId is available
+  useEffect(() => {
+    if (postId !== null) {
+      const fetchData = async () => {
+        try {
+          const fetchedPost = await fetchPost(postId);
+          setPost(fetchedPost);
+        } catch (error) {
+          console.error("Error fetching the post:", error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [postId]);
 
   if (!post) return <div>Loading...</div>;
 
