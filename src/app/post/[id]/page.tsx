@@ -21,11 +21,14 @@ type WordPressPost = {
   date: string; // Added the `date` field
 };
 
-export default function PostPage({
-  params,
-}: {
-  params: { id: string }; // Corrected type
-}) {
+// Define the props for the PostPage component
+interface PostPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function PostPage({ params }: PostPageProps) {
   const [post, setPost] = useState<WordPressPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +45,6 @@ export default function PostPage({
         setPost(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch post");
-        throw err;
       } finally {
         setIsLoading(false);
       }
