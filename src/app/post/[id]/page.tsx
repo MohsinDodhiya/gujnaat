@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft, Calendar } from 'lucide-react';
 
 // Define the type for a WordPress post
 type WordPressPost = {
@@ -25,10 +25,9 @@ interface PostPageProps {
   params: {
     id: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function PostPage({ params, searchParams }: PostPageProps) {
+export default function PostPage({ params }: PostPageProps) {
   const [post, setPost] = useState<WordPressPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
